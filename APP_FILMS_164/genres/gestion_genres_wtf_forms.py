@@ -15,14 +15,23 @@ class FormWTFAjouterGenres(FlaskForm):
         Dans le formulaire "genres_ajouter_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    nom_genre_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    nom_genre_wtf = StringField("Insérer le nom d'un client ", validators=[Length(min=2, max=20, message="min 2 max 20"),
-                                                                   Regexp(nom_genre_regexp,
+    nom_client_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    nom_client_wtf = StringField("Insérer le nom d'un client ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                   Regexp(nom_client_regexp,
                                                                           message="Pas de chiffres, de caractères "
                                                                                   "spéciaux, "
                                                                                   "d'espace à double, de double "
                                                                                   "apostrophe, de double trait union")
                                                                    ])
+    prenom_client_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    prenom_client_wtf = StringField("Insérer le prénom d'un client ",
+                                validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                            Regexp(prenom_client_regexp,
+                                                   message="Pas de chiffres, de caractères "
+                                                           "spéciaux, "
+                                                           "d'espace à double, de double "
+                                                           "apostrophe, de double trait union")
+                                            ])
     submit = SubmitField("Enregistrer genre")
 
 
@@ -31,18 +40,30 @@ class FormWTFUpdateGenre(FlaskForm):
         Dans le formulaire "genre_update_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    nom_genre_update_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    nom_genre_update_wtf = StringField("Insérer le nom d'un client ", validators=[Length(min=2, max=20, message="min 2 max 20"),
-                                                                          Regexp(nom_genre_update_regexp,
-                                                                                 message="Pas de chiffres, de "
-                                                                                         "caractères "
-                                                                                         "spéciaux, "
-                                                                                         "d'espace à double, de double "
-                                                                                         "apostrophe, de double trait "
-                                                                                         "union")
-                                                                          ])
-    date_genre_wtf_essai = DateField("Essai date", validators=[InputRequired("Date obligatoire"),
-                                                               DataRequired("Date non valide")])
+    nom_client_update_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    nom_client_update_wtf = StringField("Modifier le nom d'un client ",
+                                           validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                       Regexp(nom_client_update_regexp,
+                                                              message="Pas de chiffres, de "
+                                                                      "caractères "
+                                                                      "spéciaux, "
+                                                                      "d'espace à double, de double "
+                                                                      "apostrophe, de double trait "
+                                                                      "union")
+                                                       ])
+    prenom_client_update_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    prenom_client_update_wtf = StringField("Modifier le prénom d'un client ",
+                                           validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                       Regexp(prenom_client_update_regexp,
+                                                              message="Pas de chiffres, de "
+                                                                      "caractères "
+                                                                      "spéciaux, "
+                                                                      "d'espace à double, de double "
+                                                                      "apostrophe, de double trait "
+                                                                      "union")
+                                                       ])
+    #date_genre_wtf_essai = DateField("Essai date", validators=[InputRequired("Date obligatoire"),
+                                                               #DataRequired("Date non valide")])
     submit = SubmitField("Update genre")
 
 

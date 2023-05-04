@@ -101,25 +101,28 @@ def genres_ajouter_wtf():
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                name_genre_wtf = form.nom_genre_wtf.data
-                name_genre = name_genre_wtf.lower()
-                valeurs_insertion_dictionnaire = {"value_intitule_genre": name_genre}
-                print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
+                nom_client_wtf = form.nom_client_wtf.data
+                nom_client = nom_client_wtf.lower()
+                prenom_client_wtf = form.prenom_client_wtf.data
+                prenom_client = prenom_client_wtf.lower()
+                valeurs_insertion_dictionnaire = {"value_intitule_nom_client": nom_client}
+                valeurs_insertion_dictionnaire_2 = {"value_intitule_prenom_client": prenom_client}
+                print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire, "valeurs_insertion_dictionnaire_2", valeurs_insertion_dictionnaire_2)
 
-                strsql_insert_genre = """INSERT INTO t_client (id_client,nom_client) VALUES (NULL,%(value_intitule_genre)s) """
+                strsql_insert_genre = """INSERT INTO `t_client` (`nom_client`, `prenom_client`) VALUES (%(nom_client_wtf)s,%(prenom_client_wtf)s); """
                 with DBconnection() as mconn_bd:
-                    mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
-
+                    mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire, valeurs_insertion_dictionnaire_2)
+#(NULL,%(value_intitule_genre)s)
                 flash(f"Données insérées !!", "success")
                 print(f"Données insérées !!")
 
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
-                return redirect(url_for('genres_afficher', order_by='DESC', id_genre_sel=0))
+                return redirect(url_for('client_afficher', order_by='DESC', id_genre_sel=0))
 
-        except Exception as Exception_genres_ajouter_wtf:
+        except Exception as Exception_nom_client_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{genres_ajouter_wtf.__name__} ; "
-                                            f"{Exception_genres_ajouter_wtf}")
+                                            f"{nom_client_wtf.__name__} ; "
+                                            f"{Exception_nom_client_wtf}")
 
     return render_template("genres/genres_ajouter_wtf.html", form=form)
 
@@ -156,17 +159,21 @@ def genre_update_wtf():
         if form_update.validate_on_submit():
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
-            name_genre_update = form_update.nom_genre_update_wtf.data
-            name_genre_update = name_genre_update.lower()
-            date_genre_essai = form_update.date_genre_wtf_essai.data
+            nom_client_update = form_update.nom_client_update_wtf.data
+            #name_genre_update = name_genre_update.lower()
+            prenom_client_update = form_update.prenom_client_update_wtf.data
 
-            valeur_update_dictionnaire = {"value_id_genre": id_genre_update,
-                                          "value_name_genre": name_genre_update,
-                                          "value_date_genre_essai": date_genre_essai
+            valeur_update_dictionnaire = {
+                                          "value_nom_client": nom_client_update,
+                                          "value_prenom_client": prenom_client_update
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE `richard_samuel_garage_info1b`.`t_client` SET `prenom_client`='bat' 
+
+
+            print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
+
+            str_sql_update_intitulegenre = """UPDATE `t_client` SET `nom_client`='%(nom_client_update)s', `prenom_client`='%(prenom_client_update)s' 
             WHERE  `id_client`= """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
@@ -185,19 +192,19 @@ def genre_update_wtf():
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_nom_genre = mybd_conn.fetchone()
-            print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                  data_nom_genre["intitule_genre"])
+            print("data_nom_client ", data_nom_genre, " type ", type(data_nom_genre), " client ",
+                  data_nom_genre["nom_client"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
-            form_update.nom_genre_update_wtf.data = data_nom_genre["intitule_genre"]
-            form_update.date_genre_wtf_essai.data = data_nom_genre["date_ins_genre"]
+            form_update.nom_client_update_wtf.data = data_nom_genre["nom_client"]
+            form_update.prenom_client_update_wtf.data = data_nom_genre["prenom_client"]
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
                                       f"{genre_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
-    return render_template("genres/genre_update_wtf.html", form_update=form_update)
+    return render_template("genres/genres_ajouter_wtf.html", form_update=form_update)
 
 
 """

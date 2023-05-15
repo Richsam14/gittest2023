@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<p>
-				Ajouter un nouveau GENRE (WTForms)
+				Ajouter un nouveau CLIENT (WTForms)
 			</p>
 			<form action="" method="POST" novalidate>
 				<!-- Protection contre les attaques Cross-Site Request Forgery (CSRF) -->
@@ -14,7 +14,12 @@
 					<p>
 						{{ form.nom_client_wtf.label }}<br>
 						{{ form.nom_client_wtf(size=32) }}<br>
+						{{ form.prenom_client_wtf.label }}<br>
+						{{ form.prenom_client_wtf(size=32) }}<br>
 						{% for error in form.nom_client_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+						{% for error in form.prenom_client_wtf.errors %}
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>

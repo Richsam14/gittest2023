@@ -64,7 +64,7 @@ def genres_afficher(order_by, id_genre_sel):
                 else:
                     # Dans tous les autres cas, c'est que la table "t_genre" est vide.
                     # OM 2020.04.09 La ligne ci-dessous permet de donner un sentiment rassurant aux utilisateurs.
-                    flash(f"Données genres affichés !!", "success")
+                    flash(f"Données clients affichés !!", "success")
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
@@ -119,10 +119,10 @@ def genres_ajouter_wtf():
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
                 return redirect(url_for('client_afficher', order_by='DESC', id_genre_sel=0))
 
-        except Exception as Exception_nom_client_wtf:
+        except Exception as Exception_genres_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{nom_client_wtf.__name__} ; "
-                                            f"{Exception_nom_client_wtf}")
+                                            f"{genres_ajouter_wtf.__name__} ; "
+                                            f"{Exception_genres_ajouter_wtf}")
 
     return render_template("genres/genres_ajouter_wtf.html", form=form)
 
@@ -147,10 +147,9 @@ def genres_ajouter_wtf():
 """
 
 
+
 @app.route("/genre_update", methods=['GET', 'POST'])
 def genre_update_wtf():
-    @app.route("/genre_update", methods=['GET', 'POST'])
-    def genre_update_wtf():
 
         # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
 

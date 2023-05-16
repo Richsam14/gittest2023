@@ -105,19 +105,21 @@ def genres_ajouter_wtf():
                 nom_client = nom_client_wtf.lower()
                 prenom_client_wtf = form.prenom_client_wtf.data
                 prenom_client = prenom_client_wtf.lower()
-                valeurs_insertion_dictionnaire = {"value_intitule_nom_client": nom_client}
-                valeurs_insertion_dictionnaire_2 = {"value_intitule_prenom_client": prenom_client}
-                print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire, "valeurs_insertion_dictionnaire_2", valeurs_insertion_dictionnaire_2)
+                valeurs_insertion_dictionnaire = {
+                                                    "value_intitule_nom_client": nom_client,
+                                                    "value_intitule_prenom_client": prenom_client
+                                                }
+                print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO `t_client` (`nom_client`, `prenom_client`) VALUES (%(nom_client_wtf)s,%(prenom_client_wtf)s); """
+                strsql_insert_genre = """INSERT INTO `t_client` (`nom_client`, `prenom_client`) VALUES (%(value_intitule_nom_client)s,%(value_intitule_prenom_client)s); """
                 with DBconnection() as mconn_bd:
-                    mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire, valeurs_insertion_dictionnaire_2)
+                    mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
 #(NULL,%(value_intitule_genre)s)
                 flash(f"Données insérées !!", "success")
                 print(f"Données insérées !!")
 
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
-                return redirect(url_for('client_afficher', order_by='DESC', id_genre_sel=0))
+                return redirect(url_for('genres_afficher', order_by='DESC', id_genre_sel=0))
 
         except Exception as Exception_genres_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "

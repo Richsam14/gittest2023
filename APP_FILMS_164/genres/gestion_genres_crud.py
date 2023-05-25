@@ -291,8 +291,8 @@ def genre_delete_wtf():
                 valeur_delete_dictionnaire = {"value_id_client": id_genre_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """DELETE FROM t_client WHERE fk_client = %(value_id_client)s"""
-                str_sql_delete_idgenre = """DELETE FROM t_client WHERE id_client = %(value_id_client)s"""
+                str_sql_delete_films_genre = """DELETE FROM t_client WHERE fk_client=%(value_id_client)s"""
+                str_sql_delete_idgenre = """DELETE FROM t_client WHERE id_client=%(value_id_client)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
                 with DBconnection() as mconn_bd:

@@ -24,11 +24,21 @@
 								</th>
 							</tr>
 						</thead>
+					<tbody>
 						{% for row in data_films_associes %}
-							<tbody>
+								<tr>
+									<td>
+										{{ row.id_client }}
+									</td>
+								</tr>
 								<tr>
 									<td>
 										{{ row.nom_client }}
+									</td>
+								</tr>
+								<tr>
+									<td>
+										{{ row.prenom_client }}
 									</td>
 								</tr>
 							</tbody>
@@ -39,16 +49,16 @@
 
 				<div class="form-group">
 					<p>
-						{{ form_delete.nom_genre_delete_wtf.label }}<br>
-						{{ form_delete.nom_genre_delete_wtf(size=32, readonly=true) }}<br>
-						{% for error in form_delete.nom_genre_delete_wtf.errors %}
+						{{ form_delete.nom_client_delete_wtf.label }}<br>
+						{{ form_delete.nom_client_delete_wtf(size=32, readonly=true) }}<br>
+						{% for error in form_delete.nom_client_delete_wtf.errors %}
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>
 					<p>
 						{{ form_delete.prenom_client_delete_wtf.label }}<br>
-						{{ form_delete.prenom_client_delete_wtf(size=32) }}<br>
-						{% for error in form_update.prenom_client_delete_wtf.errors %}
+						{{ form_delete.prenom_client_delete_wtf(size=32, readonly=true) }}<br>
+						{% for error in form_delete.prenom_client_delete_wtf.errors %}
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>

@@ -76,7 +76,8 @@ class FormWTFDeleteGenre(FlaskForm):
         submit_btn_conf_del : Bouton de confirmation pour effacer un "genre".
         submit_btn_annuler : Bouton qui permet d'afficher la table "t_genre".
     """
-    nom_client_delete_wtf = StringField("Effacer ce client")
+    nom_client_delete_wtf = StringField("Effacer le client avec le nom :")
+    prenom_client_delete_wtf = StringField("et le prénom :")
     submit_btn_del = SubmitField("Effacer client")
     submit_btn_conf_del = SubmitField("Etes-vous sur d'effacer ?")
     submit_btn_annuler = SubmitField("Annuler")

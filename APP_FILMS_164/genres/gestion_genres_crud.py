@@ -306,12 +306,11 @@ def genre_delete_wtf():
                 return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=0))
 
         if request.method == "GET":
-            valeur_select_dictionnaire = {"value_id_genre": id_genre_delete}
+            valeur_select_dictionnaire = {"value_id_client": id_genre_delete}
             print(id_genre_delete, type(id_genre_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
-            str_sql_genres_films_delete = """SELECT e1.nom_client AS 'Nom du client', e1.prenom_client AS 'Prénom du client', e3.num_serie_pi AS 'Numéro de série de la pièce'
-                                                FROM t_client e1 
+            str_sql_genres_films_delete = """SELECT * FROM t_client e1
                                                 left JOIN t_client_acheter_piece e2 ON e1.id_client = e2.fk_client
                                                 left JOIN t_piece e3 ON e2.fk_piece = e3.id_piece
                                                 ORDER BY e3.num_serie_pi = %(value_id_client)s;"""
@@ -333,10 +332,10 @@ def genre_delete_wtf():
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
                 data_nom_genre = mydb_conn.fetchone()
                 print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                      data_nom_genre["intitule_genre"])
+                      data_nom_genre["nom_client"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "genre_delete_wtf.html"
-            form_delete.nom_client_delete_wtf.data = data_nom_genre["intitule_genre"]
+            form_delete.nom_client_delete_wtf.data = data_nom_genre["nom_client"]
 
             # Le bouton pour l'action "DELETE" dans le form. "genre_delete_wtf.html" est caché.
             btn_submit_del = False

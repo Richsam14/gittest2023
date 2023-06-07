@@ -28,51 +28,51 @@ from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
 """
 
 
-@app.route("/genres_afficher/<string:order_by>/<int:id_genre_sel>", methods=['GET', 'POST'])
-def genres_afficher(order_by, id_genre_sel):
+@app.route("/pieces_afficher/<string:order_by>/<int:id_piece_sel>", methods=['GET', 'POST'])
+def pieces_afficher(order_by, id_piece_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """select * from t_client"""
-                    mc_afficher.execute(strsql_genres_afficher)
+                if order_by == "ASC" and id_piece_sel == 0:
+                    strsql_pieces_afficher = """select * from t_piece"""
+                    mc_afficher.execute(strsql_pieces_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR Passer une
                     #  commande MySql classique est "SELECT * FROM t_genre"
                     # Pour "lever"(raise) une erreur s'il y a des erreurs sur les noms d'attributs dans la table
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
-                    valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """select * from t_client where id_client = %(value_id_genre_selected)s"""
+                    valeur_id_piece_selected_dictionnaire = {"value_id_piece_selected": id_piece_sel}
+                    strsql_pieces_afficher = """select * from t_piece where id_piece = %(value_id_piece_selected)s"""
 
-                    mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
+                    mc_afficher.execute(strsql_pieces_afficher, valeur_id_piece_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """select * from t_client"""
+                    strsql_pieces_afficher = """select * from t_piece"""
 
-                    mc_afficher.execute(strsql_genres_afficher)
+                    mc_afficher.execute(strsql_pieces_afficher)
 
-                data_genres = mc_afficher.fetchall()
+                data_pieces = mc_afficher.fetchall()
 
-                print("data_genres ", data_genres, " Type : ", type(data_genres))
+                print("data_pieces ", data_pieces, " Type : ", type(data_pieces))
 
                 # Différencier les messages si la table est vide.
-                if not data_genres and id_genre_sel == 0:
-                    flash("""La table "t_genre" est vide. !!""", "warning")
-                elif not data_genres and id_genre_sel > 0:
+                if not data_pieces and id_piece_sel == 0:
+                    flash("""La table "t_piece" est vide. !!""", "warning")
+                elif not data_pieces and id_piece_sel > 0:
                     # Si l'utilisateur change l'id_genre dans l'URL et que le genre n'existe pas,
-                    flash(f"Le genre demandé n'existe pas !!", "warning")
+                    flash(f"La piece demandé n'existe pas !!", "warning")
                 else:
                     # Dans tous les autres cas, c'est que la table "t_genre" est vide.
                     # OM 2020.04.09 La ligne ci-dessous permet de donner un sentiment rassurant aux utilisateurs.
-                    flash(f"Données clients affichés !!", "success")
+                    flash(f"Données pieces affichés !!", "success")
 
-        except Exception as Exception_genres_afficher:
+        except Exception as Exception_pieces_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
-                                          f"{genres_afficher.__name__} ; "
-                                          f"{Exception_genres_afficher}")
+                                          f"{pieces_afficher.__name__} ; "
+                                          f"{Exception_pieces_afficher}")
 
     # Envoie la page "HTML" au serveur.
-    return render_template("genres/genres_afficher.html", data=data_genres)
+    return render_template("pieces/pieces_afficher.html", data=data_pieces)
 
 
 """
@@ -95,38 +95,38 @@ def genres_afficher(order_by, id_genre_sel):
 """
 
 
-@app.route("/genres_ajouter", methods=['GET', 'POST'])
-def genres_ajouter_wtf():
+@app.route("/pieces_ajouter", methods=['GET', 'POST'])
+def pieces_ajouter_wtf():
     form = FormWTFAjouterGenres()
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                nom_client_wtf = form.nom_client_wtf.data
-                nom_client = nom_client_wtf.lower()
-                prenom_client_wtf = form.prenom_client_wtf.data
-                prenom_client = prenom_client_wtf.lower()
+                num_serie_piece_wtf = form.num_serie_piece_wtf.data
+                num_serie_piece = num_serie_piece_wtf.lower()
+                couleur_piece_wtf = form.couleur_piece_wtf.data
+                couleur_piece = couleur_piece_wtf.lower()
                 valeurs_insertion_dictionnaire = {
-                                                    "value_intitule_nom_client": nom_client,
-                                                    "value_intitule_prenom_client": prenom_client
+                                                    "value_intitule_num_serie_piece": num_serie_piece,
+                                                    "value_intitule_couleur_piece": couleur_piece
                                                 }
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO `t_client` (`nom_client`, `prenom_client`) VALUES (%(value_intitule_nom_client)s,%(value_intitule_prenom_client)s); """
+                strsql_insert_piece = """INSERT INTO `t_piece` (`num_serie_pi`, `couleur_piece`) VALUES (%(value_intitule_num_serie_piece)s,%(value_intitule_couleur_piece)s); """
                 with DBconnection() as mconn_bd:
-                    mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
+                    mconn_bd.execute(strsql_insert_piece, valeurs_insertion_dictionnaire)
 #(NULL,%(value_intitule_genre)s)
                 flash(f"Données insérées !!", "success")
                 print(f"Données insérées !!")
 
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
-                return redirect(url_for('genres_afficher', order_by='DESC', id_genre_sel=0))
+                return redirect(url_for('pieces_afficher', order_by='DESC', id_piece_sel=0))
 
-        except Exception as Exception_genres_ajouter_wtf:
+        except Exception as Exception_pieces_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{genres_ajouter_wtf.__name__} ; "
-                                            f"{Exception_genres_ajouter_wtf}")
+                                            f"{pieces_ajouter_wtf.__name__} ; "
+                                            f"{Exception_pieces_ajouter_wtf}")
 
-    return render_template("genres/genres_ajouter_wtf.html", form=form)
+    return render_template("pieces/pieces_ajouter_wtf.html", form=form)
 
 
 """
@@ -150,12 +150,12 @@ def genres_ajouter_wtf():
 
 
 
-@app.route("/genre_update", methods=['GET', 'POST'])
-def genre_update_wtf():
+@app.route("/piece_update", methods=['GET', 'POST'])
+def piece_update_wtf():
 
         # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
 
-        id_genre_update = request.values['id_genre_btn_edit_html']
+        id_piece_update = request.values['id_piece_btn_edit_html']
 
         # Objet formulaire pour l'UPDATE
 
@@ -171,29 +171,29 @@ def genre_update_wtf():
 
                 # Puis la convertir en lettres minuscules.
 
-                nom_client_update = form_update.nom_client_update_wtf.data
+                num_serie_piece_update = form_update.num_serie_piece_update_wtf.data
 
                 # name_genre_update = name_genre_update.lower()
 
-                prenom_client_update = form_update.prenom_client_update_wtf.data
+                couleur_piece_update = form_update.couleur_piece_update_wtf.data
 
                 valeur_update_dictionnaire = {
 
-                    "value_id_client": id_genre_update,
+                    "value_id_piece": id_piece_update,
 
-                    "value_nom_client": nom_client_update,
+                    "value_num_serie_piece": num_serie_piece_update,
 
-                    "value_prenom_client": prenom_client_update
+                    "value_couleur_piece": couleur_piece_update
 
                 }
 
                 print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-                str_sql_update_intitulegenre = """UPDATE t_client SET nom_client=%(value_nom_client)s, prenom_client=%(value_prenom_client)s WHERE id_client=%(value_id_client)s"""
+                str_sql_update_intitulepiece = """UPDATE t_piece SET num_serie_pi=%(value_num_serie_pi)s, couleur_piece=%(value_couleur_piece)s WHERE id_piece=%(value_id_piece)s"""
 
                 with DBconnection() as mconn_bd:
 
-                    mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
+                    mconn_bd.execute(str_sql_update_intitulepiece, valeur_update_dictionnaire)
 
                 flash(f"Donnée mise à jour !!", "success")
 
@@ -203,44 +203,44 @@ def genre_update_wtf():
 
                 # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
 
-                return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=id_genre_update))
+                return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=id_piece_update))
 
             elif request.method == "GET":
 
                 # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
 
-                str_sql_id_genre = "SELECT id_client, nom_client, prenom_client FROM t_client WHERE id_client=%(value_id_client)s"
+                str_sql_id_piece = "SELECT id_piece, num_serie_piece, couleur_piece FROM t_piece WHERE id_piece=%(value_id_piece)s"
 
-                valeur_select_dictionnaire = {"value_id_client": id_genre_update}
+                valeur_select_dictionnaire = {"value_id_piece": id_piece_update}
 
                 with DBconnection() as mybd_conn:
 
-                    mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
+                    mybd_conn.execute(str_sql_id_piece, valeur_select_dictionnaire)
 
                 # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
 
                 data_nom_genre = mybd_conn.fetchone()
 
-                print("data_nom_client ", data_nom_genre, " type ", type(data_nom_genre), " client ",
+                print("data_num_serie_pi ", data_nom_genre, " type ", type(data_nom_genre), " piece ",
 
                       data_nom_genre["nom_client"])
 
                 # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
 
-                form_update.nom_client_update_wtf.data = data_nom_genre["nom_client"]
+                form_update.num_serie_piece_update_wtf.data = data_nom_genre["num_serie_piece"]
 
-                form_update.prenom_client_update_wtf.data = data_nom_genre["prenom_client"]
+                form_update.couleur_piece_update_wtf.data = data_nom_genre["couleur_piece"]
 
 
         except Exception as Exception_genre_update_wtf:
 
             raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
 
-                                          f"{genre_update_wtf.__name__} ; "
+                                          f"{piece_update_wtf.__name__} ; "
 
                                           f"{Exception_genre_update_wtf}")
 
-        return render_template("genres/genre_update_wtf.html", form_update=form_update)
+        return render_template("pieces/piece_update_wtf.html", form_update=form_update)
 
 
 
@@ -260,12 +260,12 @@ def genre_update_wtf():
 """
 
 
-@app.route("/genre_delete", methods=['GET', 'POST'])
-def genre_delete_wtf():
-    data_films_attribue_genre_delete = None
+@app.route("/piece_delete", methods=['GET', 'POST'])
+def piece_delete_wtf():
+    data_films_attribue_piece_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
-    id_genre_delete = request.values['id_genre_btn_delete_html']
+    id_piece_delete = request.values['id_piece_btn_delete_html']
 
     # Objet formulaire pour effacer le genre sélectionné.
     form_delete = FormWTFDeleteGenre()
@@ -274,7 +274,7 @@ def genre_delete_wtf():
         if request.method == "POST" and form_delete.validate_on_submit():
 
             if form_delete.submit_btn_annuler.data:
-                return redirect(url_for("client_afficher", order_by="ASC", id_genre_sel=0))
+                return redirect(url_for("piece_afficher", order_by="ASC", id_piece_sel=0))
 
             if form_delete.submit_btn_conf_del.data:
                 # Récupère les données afin d'afficher à nouveau
@@ -282,38 +282,38 @@ def genre_delete_wtf():
                 data_films_attribue_genre_delete = session['data_films_attribue_genre_delete']
                 print("data_films_attribue_genre_delete ", data_films_attribue_genre_delete)
 
-                flash(f"Effacer le client de façon définitive de la BD !!!", "danger")
+                flash(f"Effacer la piece de façon définitive de la BD !!!", "danger")
                 # L'utilisateur vient de cliquer sur le bouton de confirmation pour effacer...
                 # On affiche le bouton "Effacer genre" qui va irrémédiablement EFFACER le genre
                 btn_submit_del = True
 
             if form_delete.submit_btn_del.data:
-                valeur_delete_dictionnaire = {"value_id_client": id_genre_delete}
+                valeur_delete_dictionnaire = {"value_id_piece": id_piece_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """DELETE FROM t_client WHERE id_client=%(value_id_client)s"""
-                str_sql_delete_idgenre = """DELETE FROM t_client WHERE id_client=%(value_id_client)s"""
+                str_sql_delete_films_genre = """DELETE FROM t_piece WHERE id_piece=%(value_id_piece)s"""
+                str_sql_delete_idgenre = """DELETE FROM t_piece WHERE id_piece=%(value_id_piece)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(str_sql_delete_films_genre, valeur_delete_dictionnaire)
                     mconn_bd.execute(str_sql_delete_idgenre, valeur_delete_dictionnaire)
 
-                flash(f"Genre définitivement effacé !!", "success")
-                print(f"Genre définitivement effacé !!")
+                flash(f"Piece définitivement effacé !!", "success")
+                print(f"Piece définitivement effacé !!")
 
                 # afficher les données
-                return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=0))
+                return redirect(url_for('pieces_afficher', order_by="ASC", id_genre_sel=0))
 
         if request.method == "GET":
-            valeur_select_dictionnaire = {"value_id_client": id_genre_delete}
-            print(id_genre_delete, type(id_genre_delete))
+            valeur_select_dictionnaire = {"value_id_piece": id_piece_delete}
+            print(id_piece_delete, type(id_piece_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
-            str_sql_genres_films_delete = """SELECT * FROM t_client e1
-                                                left JOIN t_client_acheter_piece e2 ON e1.id_client = e2.fk_client
-                                                left JOIN t_piece e3 ON e2.fk_piece = e3.id_piece
-                                                ORDER BY e3.num_serie_pi = %(value_id_client)s;"""
+            str_sql_genres_films_delete = """SELECT * FROM t_piece e1
+                                                left JOIN t_client_acheter_piece e2 ON e1.id_piece = e2.fk_piece
+                                                left JOIN t_client e3 ON e2.fk_client = e3.id_client
+                                                ORDER BY e1.num_serie_pi = %(value_id_piece)s;"""
 
             with DBconnection() as mydb_conn:
                 mydb_conn.execute(str_sql_genres_films_delete, valeur_select_dictionnaire)
@@ -325,24 +325,24 @@ def genre_delete_wtf():
                 session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
 
                 # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-                str_sql_id_genre = "SELECT id_client, nom_client FROM t_client WHERE id_client = %(value_id_client)s"
+                str_sql_id_genre = "SELECT id_piece, num_serie_piece FROM t_piece WHERE id_piece = %(value_id_piece)s"
 
                 mydb_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
                 # Une seule valeur est suffisante "fetchone()",
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
                 data_nom_genre = mydb_conn.fetchone()
-                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                      data_nom_genre["nom_client"])
+                print("data_num_serie_piece ", data_nom_genre, " type ", type(data_nom_genre), " piece ",
+                      data_nom_genre["num_serie_piece"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "genre_delete_wtf.html"
-            form_delete.nom_client_delete_wtf.data = data_nom_genre["nom_client"]
+            form_delete.nom_client_delete_wtf.data = data_nom_genre["num_serie_piece"]
 
             # Le bouton pour l'action "DELETE" dans le form. "genre_delete_wtf.html" est caché.
             btn_submit_del = False
 
     except Exception as Exception_genre_delete_wtf:
         raise ExceptionGenreDeleteWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{genre_delete_wtf.__name__} ; "
+                                      f"{piece_delete_wtf.__name__} ; "
                                       f"{Exception_genre_delete_wtf}")
 
     return render_template("genres/genre_delete_wtf.html",

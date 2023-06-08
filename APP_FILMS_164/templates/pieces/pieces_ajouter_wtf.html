@@ -1,25 +1,25 @@
 {% extends "base.html" %}
-{% block title %} Ajouter un GENRE (WTF) {% endblock %}
+{% block title %} Ajouter une PIECE (WTF) {% endblock %}
 {% block body %}
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
 			<p>
-				Ajouter un nouveau CLIENT (WTForms)
+				Ajouter une nouvelle PIECE (WTForms)
 			</p>
 			<form action="" method="POST" novalidate>
 				<!-- Protection contre les attaques Cross-Site Request Forgery (CSRF) -->
 				{{ form.hidden_tag() }}
 				<div class="form-group">
 					<p>
-						{{ form.nom_client_wtf.label }}<br>
-						{{ form.nom_client_wtf(size=32) }}<br>
-						{{ form.prenom_client_wtf.label }}<br>
-						{{ form.prenom_client_wtf(size=32) }}<br>
-						{% for error in form.nom_client_wtf.errors %}
+						{{ form.num_serie_piece_wtf.label }}<br>
+						{{ form.num_serie_piece_wtf(size=32) }}<br>
+						{{ form.couleur_piece_wtf.label }}<br>
+						{{ form.couleur_piece_wtf(size=32) }}<br>
+						{% for error in form.num_serie_piece_wtf.errors %}
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
-						{% for error in form.prenom_client_wtf.errors %}
+						{% for error in form.couleur_piece_wtf.errors %}
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>

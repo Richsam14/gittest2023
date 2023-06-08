@@ -265,7 +265,7 @@ def genre_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
-    id_genre_delete = request.values['id_genre_btn_delete_html']
+    id_client_delete = request.values['id_genre_btn_delete_html']
 
     # Objet formulaire pour effacer le genre sélectionné.
     form_delete = FormWTFDeleteGenre()
@@ -288,7 +288,20 @@ def genre_delete_wtf():
                 btn_submit_del = True
 
             if form_delete.submit_btn_del.data:
-                valeur_delete_dictionnaire = {"value_id_client": id_genre_delete}
+
+                nom_client_delete = form_delete.nom_client_update_wtf.data
+
+                prenom_client_delete = form_delete.prenom_client_update_wtf.data
+
+                valeur_delete_dictionnaire = {
+
+                    "value_id_client": id_client_delete,
+
+                    "value_nom_client": nom_client_delete,
+
+                    "value_prenom_client": prenom_client_delete
+
+                }
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
                 str_sql_delete_clients_piece = """DELETE FROM t_client_acheter_piece WHERE fk_client=%(value_id_client)s"""
@@ -303,15 +316,15 @@ def genre_delete_wtf():
                     mconn_bd.execute(str_sql_delete_clients_tel, valeur_delete_dictionnaire)
                     mconn_bd.execute(str_sql_delete_idclient, valeur_delete_dictionnaire)
 
-                flash(f"Genre définitivement effacé !!", "success")
-                print(f"Genre définitivement effacé !!")
+                flash(f"Client définitivement effacé !!", "success")
+                print(f"Client définitivement effacé !!")
 
                 # afficher les données
                 return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=0))
 
         if request.method == "GET":
-            valeur_select_dictionnaire = {"value_id_client": id_genre_delete}
-            print(id_genre_delete, type(id_genre_delete))
+            valeur_select_dictionnaire = {"value_id_client": id_client_delete}
+            print(id_client_delete, type(id_client_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
             str_sql_genres_films_delete = """SELECT * FROM t_client e1
@@ -340,6 +353,7 @@ def genre_delete_wtf():
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "genre_delete_wtf.html"
             form_delete.nom_client_delete_wtf.data = data_nom_genre["nom_client"]
+            form_delete.prenom_client_delete_wtf.data = data_nom_genre["prenom_client"]
 
             # Le bouton pour l'action "DELETE" dans le form. "genre_delete_wtf.html" est caché.
             btn_submit_del = False

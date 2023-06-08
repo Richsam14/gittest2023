@@ -77,15 +77,15 @@ def pieces_afficher(order_by, id_piece_sel):
 
 """
     Auteur : OM 2021.03.22
-    Définition d'une "route" /genres_ajouter
+    Définition d'une "route" /pieces_ajouter
     
-    Test : ex : http://127.0.0.1:5575/genres_ajouter
+    Test : ex : http://127.0.0.1:5575/pieces_ajouter
     
     Paramètres : sans
     
     But : Ajouter un genre pour un film
     
-    Remarque :  Dans le champ "name_genre_html" du formulaire "genres/genres_ajouter.html",
+    Remarque :  Dans le champ "name_genre_html" du formulaire "pieces/pieces_ajouter.html",
                 le contrôle de la saisie s'effectue ici en Python.
                 On transforme la saisie en minuscules.
                 On ne doit pas accepter des valeurs vides, des valeurs avec des chiffres,
@@ -97,7 +97,7 @@ def pieces_afficher(order_by, id_piece_sel):
 
 @app.route("/pieces_ajouter", methods=['GET', 'POST'])
 def pieces_ajouter_wtf():
-    form = FormWTFAjouterGenres()
+    form = FormWTFAjouterPieces()
     if request.method == "POST":
         try:
             if form.validate_on_submit():

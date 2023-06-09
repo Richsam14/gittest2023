@@ -15,10 +15,10 @@ class FormWTFAjouterPieces(FlaskForm):
         Dans le formulaire "pieces_ajouter_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    num_serie_piece_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    num_serie_piece_regexp = r"^(?!.*([^\w\s]|['\"\-]{2}))[A-Za-zÀ-ÖØ-öø-ÿ0-9\s'\-]+$"
     num_serie_piece_wtf = StringField("Insérer le numéro de série d'une pièce ", validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                                    Regexp(num_serie_piece_regexp,
-                                                                          message="Pas de chiffres, de caractères "
+                                                                          message="Pas de caractères "
                                                                                   "spéciaux, "
                                                                                   "d'espace à double, de double "
                                                                                   "apostrophe, de double trait union")
@@ -40,11 +40,11 @@ class FormWTFUpdatePiece(FlaskForm):
         Dans le formulaire "genre_update_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    num_serie_piece_update_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    num_serie_piece_update_regexp = r"^(?!.*([^\w\s]|['\"\-]{2}))[A-Za-zÀ-ÖØ-öø-ÿ0-9\s'\-]+$"
     num_serie_piece_update_wtf = StringField("Modifier le numéro de série d'une pièce ",
                                            validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                        Regexp(num_serie_piece_update_regexp,
-                                                              message="Pas de chiffres, de "
+                                                              message="Pas de "
                                                                       "caractères "
                                                                       "spéciaux, "
                                                                       "d'espace à double, de double "

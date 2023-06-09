@@ -342,7 +342,7 @@ def genre_delete_wtf():
                 session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
 
                 # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-                str_sql_id_genre = "SELECT id_client, nom_client FROM t_client WHERE id_client = %(value_id_client)s"
+                str_sql_id_genre = "SELECT * FROM t_client WHERE id_client = %(value_id_client)s"
 
                 mydb_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
                 # Une seule valeur est suffisante "fetchone()",

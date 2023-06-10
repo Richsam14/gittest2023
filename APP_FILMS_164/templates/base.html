@@ -48,14 +48,16 @@
 						<!--		Afficher la liste des genres dans l'ordre (ASC) et tous les genres (0)-->
 						<a class="nav-link" href="{{ url_for('genres_afficher', order_by='ASC', id_genre_sel=0) }}">Clients</a>
 					</li>
-
-					<li class="nav-item">
-
-						<a class="nav-link" href="{{ url_for('pieces_afficher', order_by='ASC', id_piece_sel=0) }}">Pieces</a>
-					</li>
-					<li class="nav-item">
-
-						<a class="nav-link" href="{{ url_for('genres_afficher', order_by='ASC', id_genre_sel=0) }}">Clients_Pieces</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navdropdownfilms" role="button"
+						   data-bs-toggle="dropdown" aria-expanded="false">
+							Pieces
+						</a>
+						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+							<li><a class="nav-link" href="{{ url_for('pieces_afficher', order_by='ASC', id_piece_sel=0) }}">Pieces</a>
+							</li>
+							<li><a class="nav-link" href="{{ url_for('clients_pieces_afficher', id_piece_sel=0) }}">Clients/Pieces</a></li>
+						</ul>
 					</li>
 				</ul>
 			</div>

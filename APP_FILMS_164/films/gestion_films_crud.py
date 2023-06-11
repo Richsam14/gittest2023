@@ -134,7 +134,10 @@ def film_update_wtf():
             return redirect(url_for('films_genres_afficher', id_film_sel=id_client_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_film" et "intitule_genre" de la "t_genre"
-            str_sql_id_film = "SELECT * FROM t_client WHERE id_client = %(value_id_film)s"
+            str_sql_id_film = """SELECT * FROM t_piece e1
+                                                left JOIN t_client_acheter_piece e2 ON e1.id_piece = e2.fk_piece
+                                                left JOIN t_client e3 ON e2.fk_client = e3.id_client
+                                                ORDER BY e1.num_serie_pi;"""
             valeur_select_dictionnaire = {"value_id_film": id_client_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_film, valeur_select_dictionnaire)
@@ -146,8 +149,8 @@ def film_update_wtf():
             # Afficher la valeur sélectionnée dans le champ du formulaire "film_update_wtf.html"
             form_update_film.nom_client_update_wtf.data = data_film["nom_client"]
             form_update_film.prenom_client_update_wtf.data = data_film["prenom_client"]
-            form_update_film.num_serie_client_update_wtf.data = data_film["num_serie_pi"]
-            form_update_film.couleur_client_update_wtf.data = data_film["couleur_piece"]
+            form_update_film.num_serie_client_update_wtf.data = data_film["num_serie_client"]
+            form_update_film.couleur_client_update_wtf.data = data_film["couleur_client"]
 
     except Exception as Exception_film_update_wtf:
         raise ExceptionFilmUpdateWtf(f"fichier : {Path(__file__).name}  ;  "

@@ -50,13 +50,13 @@ def clients_pieces_afficher(id_piece_sel):
                     mc_afficher.execute(strsql_clients_pieces_afficher_data, valeur_id_piece_selected_dictionnaire)
 
                 # Récupère les données de la requête.
-                data_clients_genres_afficher = mc_afficher.fetchall()
-                print("data_clients ", data_clients_genres_afficher, " Type : ", type(data_clients_genres_afficher))
+                data_clients_pieces_afficher = mc_afficher.fetchall()
+                print("data_clients ", data_clients_pieces_afficher, " Type : ", type(data_clients_pieces_afficher))
 
                 # Différencier les messages.
-                if not data_clients_genres_afficher and id_piece_sel == 0:
+                if not data_clients_pieces_afficher and id_piece_sel == 0:
                     flash("""La table "t_piece" est vide. !""", "warning")
-                elif not data_clients_genres_afficher and id_piece_sel > 0:
+                elif not data_clients_pieces_afficher and id_piece_sel > 0:
                     # Si l'utilisateur change l'id_film dans l'URL et qu'il ne correspond à aucun film
                     flash(f"la pièce {id_piece_sel} demandé n'existe pas !!", "warning")
                 else:
@@ -66,9 +66,9 @@ def clients_pieces_afficher(id_piece_sel):
             raise ExceptionFilmsGenresAfficher(f"fichier : {Path(__file__).name}  ;  {clients_pieces_afficher.__name__} ;"
                                                f"{Exception_clients_pieces_afficher}")
 
-    print("clients_pieces_afficher  ", data_clients_genres_afficher)
+    print("clients_pieces_afficher  ", data_clients_pieces_afficher)
     # Envoie la page "HTML" au serveur.
-    return render_template("pieces_clients/clients_pieces_afficher.html", data=data_clients_genres_afficher)
+    return render_template("clients_pieces/clients_pieces_afficher.html", data=data_clients_pieces_afficher)
 
 
 """
@@ -87,8 +87,8 @@ def clients_pieces_afficher(id_piece_sel):
 """
 
 
-@app.route("/edit_genre_film_selected", methods=['GET', 'POST'])
-def edit_genre_film_selected():
+@app.route("/edit_client_piece_selected", methods=['GET', 'POST'])
+def edit_client_piece_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
@@ -117,7 +117,7 @@ def edit_genre_film_selected():
             # 3) Sélection des genres "pas encore" attribués pour le film choisi.
             # ATTENTION à l'ordre d'assignation des variables retournées par la fonction "genres_films_afficher_data"
             data_genre_film_selected, data_genres_films_non_attribues, data_genres_films_attribues = \
-                genres_films_afficher_data(valeur_id_piece_selected_dictionnaire)
+                clients_pieces_afficher_data(valeur_id_piece_selected_dictionnaire)
 
             print(data_genre_film_selected)
             lst_data_film_selected = [item['id_film'] for item in data_genre_film_selected]
@@ -152,7 +152,7 @@ def edit_genre_film_selected():
 
         except Exception as Exception_edit_genre_film_selected:
             raise ExceptionEditGenreFilmSelected(f"fichier : {Path(__file__).name}  ;  "
-                                                 f"{edit_genre_film_selected.__name__} ; "
+                                                 f"{edit_client_piece_selected.__name__} ; "
                                                  f"{Exception_edit_genre_film_selected}")
 
     return render_template("films_genres/films_genres_modifier_tags_dropbox.html",
@@ -176,8 +176,8 @@ def edit_genre_film_selected():
 """
 
 
-@app.route("/update_genre_film_selected", methods=['GET', 'POST'])
-def update_genre_film_selected():
+@app.route("/update_client_piece_selected", methods=['GET', 'POST'])
+def update_client_piece_selected():
     if request.method == "POST":
         try:
             # Récupère l'id du film sélectionné
@@ -253,7 +253,7 @@ def update_genre_film_selected():
 
         except Exception as Exception_update_genre_film_selected:
             raise ExceptionUpdateGenreFilmSelected(f"fichier : {Path(__file__).name}  ;  "
-                                                   f"{update_genre_film_selected.__name__} ; "
+                                                   f"{update_client_piece_selected.__name__} ; "
                                                    f"{Exception_update_genre_film_selected}")
 
     # Après cette mise à jour de la table intermédiaire "t_genre_film",
@@ -271,7 +271,7 @@ def update_genre_film_selected():
 """
 
 
-def genres_films_afficher_data(valeur_id_piece_selected_dict):
+def clients_pieces_afficher_data(valeur_id_piece_selected_dict):
     print("valeur_id_piece_selected_dict...", valeur_id_piece_selected_dict)
     try:
 
@@ -321,5 +321,5 @@ def genres_films_afficher_data(valeur_id_piece_selected_dict):
 
     except Exception as Exception_genres_films_afficher_data:
         raise ExceptionGenresFilmsAfficherData(f"fichier : {Path(__file__).name}  ;  "
-                                               f"{genres_films_afficher_data.__name__} ; "
+                                               f"{clients_pieces_afficher_data.__name__} ; "
                                                f"{Exception_genres_films_afficher_data}")

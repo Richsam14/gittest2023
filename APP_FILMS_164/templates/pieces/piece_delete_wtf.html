@@ -55,13 +55,6 @@
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>
-					<p>
-						{{ form_delete.couleur_piece_delete_wtf.label }}<br>
-						{{ form_delete.couleur_piece_delete_wtf(size=32, readonly=true) }}<br>
-						{% for error in form_delete.couleur_piece_delete_wtf.errors %}
-							<span style="color: red;">[{{ error }}]</span>
-						{% endfor %}
-					</p>
 				</div>
 				{{ form_delete.submit_btn_conf_del(class="btn btn-info") }}
 

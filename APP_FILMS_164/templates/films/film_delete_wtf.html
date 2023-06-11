@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<p>
-				Effacer un FILM
+				Effacer ce Client
 			</p>
 			<table class="table table-responsive-sm">
 				{% if data_film_del %}
@@ -18,16 +18,13 @@
 						Nom
 					</th>
 					<th class="">
-						Durée
+						Prenom
 					</th>
 					<th class="">
-						Date de sortie
+						Numéro de série
 					</th>
 					<th class="">
-						Description
-					</th>
-					<th class="">
-						Affiche
+						Couleur
 					</th>
 				</tr>
 				</thead>
@@ -36,19 +33,19 @@
 				<tbody>
 				<tr>
 					<th class="align-middle">
-						{{ row.id_film }}
+						{{ row.id_client }}
 					</th>
 					<th class="align-middle">
-						{{ row.nom_film }}
+						{{ row.nom_client }}
 					</th>
 					<th class="align-middle">
-						{{ row.duree_film|default("", True) }}
+						{{ row.prenom_client|default("", True) }}
 					</th>
 					<th class="align-middle">
-						{{ row.date_sortie_film|default("", True) }}
+						{{ row.num_serie_pi|default("", True) }}
 					</th>
 					<th class="align-middle">
-						{{ row.description_film|default("", True) }}
+						{{ row.couleur_piece|default("", True) }}
 					</th>
 					<th class="align-middle">
 						<img class="img" src={{ row.cover_link_film|default(None, True) }}

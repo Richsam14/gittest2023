@@ -77,7 +77,6 @@ class FormWTFDeletePiece(FlaskForm):
         submit_btn_annuler : Bouton qui permet d'afficher la table "t_genre".
     """
     num_serie_piece_delete_wtf = StringField("Effacer la pièce avec le numéro de série :")
-    couleur_piece_delete_wtf = StringField("et la couleur :")
-    submit_btn_del = SubmitField("Effacer client")
+    submit_btn_del = SubmitField("Effacer piece")
     submit_btn_conf_del = SubmitField("Etes-vous sur d'effacer ?")
     submit_btn_annuler = SubmitField("Annuler")

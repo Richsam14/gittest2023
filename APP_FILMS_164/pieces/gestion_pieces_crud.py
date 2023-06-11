@@ -204,7 +204,7 @@ def piece_update_wtf():
 
                 # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
 
-                return redirect(url_for('pieces_afficher', order_by="ASC", id_genre_sel=id_piece_update))
+                return redirect(url_for('pieces_afficher', order_by="ASC", id_piece_sel=id_piece_update))
 
             elif request.method == "GET":
 
@@ -224,11 +224,11 @@ def piece_update_wtf():
 
                 print("data_num_serie_piece ", data_nom_genre, " type ", type(data_nom_genre), " piece ",
 
-                      data_nom_genre["num_serie_piece"])
+                      data_nom_genre["num_serie_pi"])
 
                 # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
 
-                form_update.num_serie_piece_update_wtf.data = data_nom_genre["num_serie_piece"]
+                form_update.num_serie_piece_update_wtf.data = data_nom_genre["num_serie_pi"]
 
                 form_update.couleur_piece_update_wtf.data = data_nom_genre["couleur_piece"]
 
@@ -295,7 +295,7 @@ def piece_delete_wtf():
                 str_sql_delete_piece_client = """DELETE FROM t_client_acheter_piece WHERE fk_piece=%(value_id_piece)s"""
                 str_sql_delete_entrepot_piece = """DELETE FROM t_entrepot_reprendre_piece WHERE fk_piece=%(value_id_piece)s"""
                 str_sql_delete_fournisseur_piece = """DELETE FROM t_fournisseur_envoyer_piece WHERE fk_piece=%(value_id_piece)s"""
-                str_sql_delete_piece_entrepot = """DELETE FROM t_entrepot_deposer_piece WHERE fk_piece=%(value_id_piece)s"""
+                str_sql_delete_piece_entrepot = """DELETE FROM t_piece_deposer_entrepot WHERE fk_piece=%(value_id_piece)s"""
                 str_sql_delete_idpiece = """DELETE FROM t_piece WHERE id_piece=%(value_id_piece)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
@@ -310,7 +310,7 @@ def piece_delete_wtf():
                 print(f"Piece définitivement effacé !!")
 
                 # afficher les données
-                return redirect(url_for('pieces_afficher', order_by="ASC", id_genre_sel=0))
+                return redirect(url_for('pieces_afficher', order_by="ASC", id_piece_sel=0))
 
         if request.method == "GET":
             valeur_select_dictionnaire = {"value_id_piece": id_piece_delete}
@@ -339,10 +339,10 @@ def piece_delete_wtf():
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
                 data_num_serie_piece = mydb_conn.fetchone()
                 print("data_num_serie_piece ", data_num_serie_piece, " type ", type(data_num_serie_piece), " piece ",
-                      data_num_serie_piece["num_serie_piece"])
+                      data_num_serie_piece["num_serie_pi"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "genre_delete_wtf.html"
-            form_delete.num_serie_piece_delete_wtf.data = data_num_serie_piece["num_serie_piece"]
+            form_delete.num_serie_piece_delete_wtf.data = data_num_serie_piece["num_serie_pi"]
 
             # Le bouton pour l'action "DELETE" dans le form. "genre_delete_wtf.html" est caché.
             btn_submit_del = False

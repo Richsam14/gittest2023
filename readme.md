@@ -1,4 +1,4 @@
-# Module 164 du 2023.03.20
+# Module 164 du 2023.03.20 / Samuel Richard
 
 ## Connexion entre Python et MySql
 
@@ -16,11 +16,8 @@
 * Démarrer le microframework FLASK
     * Dans le répertoire racine du projet, ouvrir le fichier "run_mon_app.py"
     * Cliquer avec le bouton droit sur l'onglet de ce fichier et choisir "run" (CTRL-MAJ-F10)
-
-
-# Vos devoirs :
 * Placer votre "DUMP" à la place de celui de ma "BD" garages. Votre "DUMP" doit se nommer "VOTRENOM_VOTREPRENOM_VOTRECLASSE_VOTRESUJET_164.SQL"
-  * Dans le répertoire "database" vous devez placer vos fichiers (PDF: Cahier des charges, MCD, MLD, dictionnaires des données et SQL : requêtes, etc)
+  * Dans le répertoire "database" vous devez placer votre fichier DUMP
   * Ouvrir le fichier "database/1_ImportationDumpSql.py"
     * Cliquer avec le bouton droit sur l'onglet de ce fichier et choisir "run" (CTRL-MAJ-F10)
     * En cas d'erreurs : ouvrir le fichier ".env" à la racine du projet, contrôler les indications de connexion pour la
